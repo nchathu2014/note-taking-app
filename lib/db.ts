@@ -1,33 +1,17 @@
 import mongoose from "mongoose";
-
-declare global {
-  var mongoose:
-    | {
-        conn: mongoose.Mongoose | null;
-        promise: Promise<mongoose.Mongoose> | null;
-      }
-    | undefined;
-}
-
 const MONGODB_URI = process.env.NEXT_MONGODB_URI || "";
-
-let cached = global.mongoose ?? { conn: null, promise: null };
+let isConnected = false;
 
 export async function dbConnect() {
   try {
-    if (cached.conn) {
-      console.log("Using existing mongodb connection");
-      return cached.conn;
+    if (isConnected) {
+      console.log("mongodb is already connected");
+      return;
     }
 
-    if (!cached.promise) {
-      cached.promise = mongoose.connect(MONGODB_URI);
-    }
-
-    cached.conn = await cached.promise;
-    global.mongoose = cached;
-    console.log("New mongodb connection established");
-    return cached.conn;
+    const db = await mongoose.connect(MONGODB_URI);
+    isConnected = db.connections[0].readyState === 1;
+    console.log("Connected to mongodb");
   } catch (error) {
     console.error("Failed to connect mongodb", error);
     throw error;

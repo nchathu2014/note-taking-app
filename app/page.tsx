@@ -1,4 +1,4 @@
-import { dbConnect } from "@/lib/db";
+import { dbConnect } from "@/lib/back_db";
 
 export default async function Home() {
   await dbConnect();
