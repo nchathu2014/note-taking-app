@@ -1,9 +1,7 @@
 import { dbConnect } from "@/lib/back_db";
-import { NoteClient } from "./components/notes/NoteClient";
+import { NoteClient } from "./components/NoteClient";
 import { ToastContainer } from "react-toastify";
 import { Note } from "@/models/Note";
-import Footer from "./components/notes/Footer";
-import { Header } from "./components/notes/Header";
 
 const fetchAllNotes = async () => {
   await dbConnect();
