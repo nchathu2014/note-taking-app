@@ -1,19 +1,31 @@
 import { dbConnect } from "@/lib/back_db";
-import { Note } from "./components/notes/Note";
-  import { ToastContainer} from 'react-toastify';
+import { NoteClient } from "./components/notes/NoteClient";
+import { ToastContainer } from "react-toastify";
+import { Note } from "@/models/Note";
+import Footer from "./components/notes/Footer";
+import { Header } from "./components/notes/Header";
+
+const fetchAllNotes = async () => {
+  await dbConnect();
+  const notes = await Note.find({}).sort({ createdAt: -1 }).select("-__v");
+  return notes?.map((note) => ({
+    ...note.toObject(), // converts Mongoose object to plain JS object
+    _id: note?._id.toString(),
+  }));
+};
 
 export default async function Home() {
-  await dbConnect();
+  const notes = await fetchAllNotes();
   return (
-    <div className="flex flex-col h-screen p-10 bg-gray-800 font-sans dark:bg-black">
-      <main>
-        <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-          Note Taking App
-        </h1>
-       
-        <Note/>
-        <ToastContainer/>
+    <div className="bg-gray-200 flex flex-col min-h-screen">
+      
+
+      <main className="flex flex-col justify-center items-center">
+        <NoteClient initialNotes={notes} />
+        <ToastContainer />
       </main>
+
+      
     </div>
   );
 }
