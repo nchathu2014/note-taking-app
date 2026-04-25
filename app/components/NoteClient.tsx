@@ -133,7 +133,7 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
             <textarea
               name="content"
               id="content"
-              rows={8}
+              rows={4}
               placeholder="Your note content *"
               className="border border-gray-300 rounded-lg py-3 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-600"
             ></textarea>
