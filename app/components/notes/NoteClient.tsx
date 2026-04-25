@@ -26,7 +26,7 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
       const content = formData.get("content");
 
       if (title === "" || content === "") {
-        toast("Both fields are mandatory", { type: "error", autoClose: 3000 });
+        toast("Both fields are mandatory", { type: "error", autoClose: 800 });
         return;
       }
 
@@ -50,11 +50,11 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
       }
 
       formRef?.current?.reset();
-      toast(data.message, { type: status, autoClose: 3000 });
+      toast(data.message, { type: status, autoClose: 800 });
     } catch (error) {
       const errorMsg =
         error instanceof Error ? error.message : "Something went wrong";
-      toast(errorMsg, { type: "error", autoClose: 3000 });
+      toast(errorMsg, { type: "error", autoClose: 800 });
     }
   };
 
@@ -76,7 +76,7 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
     } catch (error) {
       const errMsg =
         error instanceof Error ? error?.message : "Something went wrong";
-      toast(errMsg, { type: "error", autoClose: 3000 });
+      toast(errMsg, { type: "error", autoClose: 800 });
     }
   };
 
@@ -88,11 +88,11 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
       });
 
       const { status, data } = await response.json();
-      toast(data.message, { type: status, autoClose: 3000 });
+      toast(data.message, { type: status, autoClose: 800 });
     } catch (error) {
       const errMsg =
         error instanceof Error ? error?.message : "Something went wrong";
-      toast(errMsg, { type: "error", autoClose: 3000 });
+      toast(errMsg, { type: "error", autoClose: 800 });
     }
   };
 
@@ -187,17 +187,20 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
                     {note?.title}
                   </h3>
                 </div>
-                <p className="text-gray-700 mb-2">{note?.content}</p>
+                <p className="text-gray-700 mb-2 truncate w-full max-w-xs ">
+                  {note?.content}
+                </p>
 
                 <div className="flex flex-col gap-1">
                   <p className="text-xs text-gray-500">
-                  Created: {new Date(note?.createdAt).toLocaleString("en-US")}
-                </p>
-                {note?.createdAt !== note?.updateAt && (
-                  <p className="text-xs text-gray-500">
-                    Updated: {new Date(note?.updateAt).toLocaleString("en-US")}
+                    Created: {new Date(note?.createdAt).toLocaleString("en-US")}
                   </p>
-                )}
+                  {note?.createdAt !== note?.updateAt && (
+                    <p className="text-xs text-gray-500">
+                      Updated:{" "}
+                      {new Date(note?.updateAt).toLocaleString("en-US")}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex justify-end gap-2 mt-5">
