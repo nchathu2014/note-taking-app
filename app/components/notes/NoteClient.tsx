@@ -191,11 +191,11 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
 
                 <div className="flex flex-col gap-1">
                   <p className="text-xs text-gray-500">
-                  Created: {note?.createdAt.toLocaleString()}
+                  Created: {new Date(note?.createdAt).toLocaleString("en-US")}
                 </p>
                 {note?.createdAt !== note?.updateAt && (
                   <p className="text-xs text-gray-500">
-                    Updated: {note?.updateAt.toLocaleString()}
+                    Updated: {new Date(note?.updateAt).toLocaleString("en-US")}
                   </p>
                 )}
                 </div>
