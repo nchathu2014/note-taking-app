@@ -5,9 +5,9 @@ import { Note } from "@/models/Note";
 
 const fetchAllNotes = async () => {
   await dbConnect();
-  const notes = await Note.find({}).sort({ createdAt: -1 }).select("-__v");
+  const notes = await Note.find({}).sort({ createdAt: -1 }).lean();
   return notes?.map((note) => ({
-    ...note.toObject(), // converts Mongoose object to plain JS object
+    ...note, // converts Mongoose object to plain JS object
     _id: note?._id.toString(),
   }));
 };
