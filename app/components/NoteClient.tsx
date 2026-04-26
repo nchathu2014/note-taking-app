@@ -14,6 +14,8 @@ import { confirm } from "./MyDialog";
 
 
 
+
+
 type NoteClientProps = {
   initialNotes: Note[];
 };
