@@ -32,6 +32,14 @@ export function UpdateForm({ note }: { note: Note }) {
         return;
       }
 
+      if (!title.trim()|| !content.trim()) {
+        toast("Both fields are mandatory", {
+          type: "error",
+          autoClose: 2000,
+        });
+        return;
+      }
+
       const response = await fetch(API_URL, {
         method: API_METHODS.PATCH,
         headers: {
@@ -54,8 +62,8 @@ export function UpdateForm({ note }: { note: Note }) {
   };
 
   const onReset = () => {
-  setTitle( "");
-  setContent( "");
+  setTitle( note?.title??"");
+  setContent( note?.content??"");
 };
 
   return (

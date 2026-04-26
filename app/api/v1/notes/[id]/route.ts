@@ -108,7 +108,7 @@ export async function DELETE(
     }
     //delete
     await Note.findOneAndDelete({ _id: id });
-    revalidatePath("/")
+    revalidatePath("/");
     return NextResponse.json(
       {
         status: "success",
@@ -144,6 +144,20 @@ export async function PATCH(
 ) {
   try {
     await dbConnect();
+    const { title, content } = await request.json();
+    //filed validation
+    if (!content?.trim() || !title?.trim()) {
+      return NextResponse.json(
+        {
+          status: "fail",
+          data: {
+            message: "Both fields are mandatory",
+          },
+        },
+        { status: 400 },
+      );
+    }
+
     const { id } = await params;
     // validate ObjectId format before querying
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -171,8 +185,8 @@ export async function PATCH(
       );
     }
     //update
-    const body = await request.json();
-    await Note.findByIdAndUpdate(id, body);
+
+    await Note.findByIdAndUpdate(id, { title, content });
     return NextResponse.json(
       {
         status: "success",

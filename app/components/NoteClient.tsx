@@ -119,7 +119,7 @@ const router = useRouter()
         <form
           ref={formRef}
           action={createNote}
-          className=" mx-auto md:bg-white p-6 rounded-lg shadow-md mt-5"
+          className=" mx-auto bg-white p-6 rounded-lg shadow-md mt-5"
         >
           <div className="flex justify-between mb-4">
             <h2 className="text-2xl font-semibold ">Create a New Note</h2>
