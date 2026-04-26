@@ -12,10 +12,6 @@ import { IoCreateOutline } from "react-icons/io5";
 import { confirm } from "./MyDialog";
 //import { useRouter } from "next/navigation";
 
-
-
-
-
 type NoteClientProps = {
   initialNotes: Note[];
 };
@@ -24,8 +20,7 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
   const [notes, setNotes] = useState<Note[]>(initialNotes);
   const formRef = useRef<HTMLFormElement>(null);
 
-  //Todo: introduce a way later
-  //const router = useRouter()
+ // const router = useRouter()
 
   const createNote = async () => {
     try {
@@ -96,6 +91,9 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
       });
 
       const { status, data } = await response.json();
+      if(status === 'success'){
+        setNotes([])
+      }
       toast(data.message, { type: status, autoClose: 800 });
     } catch (error) {
       const errMsg =
@@ -204,10 +202,10 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
                   <p className="text-xs text-gray-500">
                     Created: {new Date(note?.createdAt).toLocaleString("en-US")}
                   </p>
-                  {note?.createdAt !== note?.updateAt && (
+                  {note?.createdAt !== note?.updatedAt && (
                     <p className="text-xs text-gray-500">
                       Updated:{" "}
-                      {new Date(note?.updateAt).toLocaleString("en-US")}
+                      {new Date(note?.updatedAt).toLocaleString("en-US")}
                     </p>
                   )}
                 </div>

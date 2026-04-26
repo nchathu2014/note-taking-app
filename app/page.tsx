@@ -3,7 +3,7 @@ import { NoteClient } from "./components/NoteClient";
 import { ToastContainer } from "react-toastify";
 import { Note } from "@/models/Note";
 
-
+export const dynamic = "force-dynamic";
 
 const fetchAllNotes = async () => {
   await dbConnect();
