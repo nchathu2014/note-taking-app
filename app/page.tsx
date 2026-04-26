@@ -3,6 +3,8 @@ import { NoteClient } from "./components/NoteClient";
 import { ToastContainer } from "react-toastify";
 import { Note } from "@/models/Note";
 
+
+
 const fetchAllNotes = async () => {
   await dbConnect();
   const notes = await Note.find({}).sort({ createdAt: -1 }).lean();
@@ -11,6 +13,7 @@ const fetchAllNotes = async () => {
     _id: note?._id.toString(),
   }));
 };
+
 
 export default async function Home() {
   const notes = await fetchAllNotes();
