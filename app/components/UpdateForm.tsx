@@ -1,11 +1,19 @@
-"use client"
+"use client";
 
-import { Note } from "../types/note";
+import { BASE_API } from "@/urls/urls";
+import { API_METHODS, Note } from "../types/note";
 import { useState } from "react";
+import { toast } from "react-toastify";
+
+import { useRouter } from "next/navigation";
 
 export function UpdateForm({ note }: { note: Note }) {
-  const [title, setTitle] = useState(note?.title?? "");
-  const [content, setContent] = useState(note?.content?? "");
+
+  const router = useRouter()
+  const [title, setTitle] = useState(note?.title ?? "");
+  const [content, setContent] = useState(note?.content ?? "");
+
+  const API_URL = `${BASE_API}/${note?._id}`;
 
   const onChangeTitle = (val: string) => {
     setTitle(val);
@@ -14,8 +22,44 @@ export function UpdateForm({ note }: { note: Note }) {
     setContent(val);
   };
 
+  const onUpdate = async () => {
+    try {
+      if (title.trim() === note?.title && content.trim() === note?.content) {
+        toast("You didn't do any change. Please update the note", {
+          type: "error",
+          autoClose: 2000,
+        });
+        return;
+      }
+
+      const response = await fetch(API_URL, {
+        method: API_METHODS.PATCH,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          content,
+        }),
+      });
+
+      const { status, data } = await response.json();
+      toast(data.message, { type: status, autoClose: 800 });
+      router.push('/')
+    } catch (error) {
+      const errorMsg =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast(errorMsg, { type: "error", autoClose: 800 });
+    }
+  };
+
+  const onReset = () => {
+  setTitle( "");
+  setContent( "");
+};
+
   return (
-    <form className="bg-white p-6 rounded-lg shadow-md mt-5">
+    <form className="bg-white p-6 rounded-lg shadow-md mt-5" action={onUpdate}>
       <div className="flex justify-between mb-4">
         <h2 className="text-2xl font-semibold ">Update Note</h2>
       </div>
@@ -48,7 +92,8 @@ export function UpdateForm({ note }: { note: Note }) {
           Update
         </button>
         <button
-          type="reset"
+          type="button"
+          onClick={onReset}
           className="py-4 px-6 w-full bg-white text-black border border-gray-700 rounded-sm hover:cursor-pointer hover:bg-gray-100"
         >
           Reset

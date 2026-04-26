@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     await dbConnect();
     const body = await request.json();
     const note = await Note.create(body);
-    revalidatePath('/')
+    //revalidatePath('/')
 
     return NextResponse.json(
       {
@@ -94,7 +94,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     const result = await Note.deleteMany({});
-    revalidatePath('/')
+    //revalidatePath('/')
     return NextResponse.json(
       {
         status: "success",

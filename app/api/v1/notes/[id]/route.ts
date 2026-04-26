@@ -94,7 +94,7 @@ export async function DELETE(
     }
 
     const note = await Note.findById(id);
-    revalidatePath('/')
+    //revalidatePath('/')
     if (!note) {
       return NextResponse.json(
         {

@@ -10,7 +10,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoCreateOutline } from "react-icons/io5";
 
 import { confirm } from "./MyDialog";
-//import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type NoteClientProps = {
   initialNotes: Note[];
@@ -20,7 +20,7 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
   const [notes, setNotes] = useState<Note[]>(initialNotes);
   const formRef = useRef<HTMLFormElement>(null);
 
- // const router = useRouter()
+const router = useRouter()
 
   const createNote = async () => {
     try {
@@ -119,7 +119,7 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
         <form
           ref={formRef}
           action={createNote}
-          className="bg-white p-6 rounded-lg shadow-md mt-5"
+          className=" mx-auto md:bg-white p-6 rounded-lg shadow-md mt-5"
         >
           <div className="flex justify-between mb-4">
             <h2 className="text-2xl font-semibold ">Create a New Note</h2>
@@ -182,12 +182,11 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
             </h2>
           </div>
 
-          <div className="flex flex-wrap grow gap-3 m-5">
+          <div className="flex flex-wrap grow gap-3 m-5 justify-center">
             {notes?.map((note) => (
               <div
                 key={note?._id}
-                 //onClick={()=>router.push(`/notes/${note?._id}`)}
-                className="bg-white p-6 rounded-lg shadow-md hover:bg-gray-100 hover:cursor-pointer"
+                className="bg-white p-6 rounded-lg shadow-md hover:bg-gray-100"
               >
                 <div className="flex  justify-between items-start mb-2">
                   <h3 className="text-lg font-semibold truncate w-full max-w-xs">
@@ -211,7 +210,9 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
                 </div>
 
                 <div className="flex justify-end gap-2 mt-5">
-                  <button className="text-blue-500 hover:text-blue-700 hover:cursor-pointer">
+                  <button className="text-blue-500 hover:text-blue-700 hover:cursor-pointer" 
+                  
+                  onClick={()=>router.push(`/notes/${note?._id}`)}>
                     <FaRegEdit className="text-lg" />
                   </button>
                   <button className="text-red-500 hover:text-red-700 hover:cursor-pointer">
