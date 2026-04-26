@@ -1,5 +1,5 @@
 import Link from "next/link";
-const BASE_URL = process.env.NEXT_BASE_URL || ''
+const BASE_URL = process.env.NEXT_BASE_URL || "";
 
 export function Header() {
   return (
@@ -7,9 +7,7 @@ export function Header() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center p-3">
           <h1 className="text-2xl md:text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            <Link href={BASE_URL}>
-            Note Taking App
-            </Link>
+            <Link href={BASE_URL}>Note Taking App</Link>
           </h1>
           <span className="text-md md:text-lg font-normal">
             Built with Next.JS, MongoDB, TailwindCSS & More...

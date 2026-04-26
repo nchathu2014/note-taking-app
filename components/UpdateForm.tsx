@@ -1,15 +1,19 @@
 "use client";
 
 import { BASE_API } from "@/urls/urls";
-import { API_METHODS, Note } from "../types/note";
+import { API_METHODS, Note } from "../app/types/note";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { Breadcrumb } from "./Breadcrumb";
 
 export function UpdateForm({ note }: { note: Note }) {
-
-  const router = useRouter()
+  const router = useRouter();
+  const path = usePathname();
+  const params = useParams();
+  console.log(path)
+  console.log(params)
   const [title, setTitle] = useState(note?.title ?? "");
   const [content, setContent] = useState(note?.content ?? "");
 
@@ -32,7 +36,7 @@ export function UpdateForm({ note }: { note: Note }) {
         return;
       }
 
-      if (!title.trim()|| !content.trim()) {
+      if (!title.trim() || !content.trim()) {
         toast("Both fields are mandatory", {
           type: "error",
           autoClose: 2000,
@@ -53,7 +57,7 @@ export function UpdateForm({ note }: { note: Note }) {
 
       const { status, data } = await response.json();
       toast(data.message, { type: status, autoClose: 800 });
-      router.push('/')
+      router.push("/");
     } catch (error) {
       const errorMsg =
         error instanceof Error ? error.message : "Something went wrong";
@@ -62,11 +66,13 @@ export function UpdateForm({ note }: { note: Note }) {
   };
 
   const onReset = () => {
-  setTitle( note?.title??"");
-  setContent( note?.content??"");
-};
+    setTitle(note?.title ?? "");
+    setContent(note?.content ?? "");
+  };
 
   return (
+    <>
+    {/* <Breadcrumb path={path}/> */}
     <form className="bg-white p-6 rounded-lg shadow-md mt-5" action={onUpdate}>
       <div className="flex justify-between mb-4">
         <h2 className="text-2xl font-semibold ">Update Note</h2>
@@ -108,5 +114,6 @@ export function UpdateForm({ note }: { note: Note }) {
         </button>
       </div>
     </form>
+    </>
   );
 }

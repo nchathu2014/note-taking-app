@@ -1,4 +1,4 @@
-import { UpdateForm } from "@/app/components/UpdateForm";
+import { UpdateForm } from "@/components/UpdateForm";
 import { Note } from "@/models/Note";
 import { BASE_API } from "@/urls/urls";
 import { ToastContainer } from "react-toastify";
@@ -18,7 +18,7 @@ export default async function NoteUpdatePage({
 }) {
   const { id } = await params;
   const response = await fetch(`${BASE_API}/${id}`, {
-    cache: "no-cache",
+    cache: "no-store",
   });
   const responseData = await response.json();
   const note = responseData?.data?.note;
