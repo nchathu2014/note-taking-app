@@ -1,6 +1,7 @@
 import { dbConnect } from "@/lib/back_db";
 import { Note } from "@/models/Note";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 /**
  * Fetch All Notes
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
     await dbConnect();
     const body = await request.json();
     const note = await Note.create(body);
+    revalidatePath("/"); // for preventing the caching issue. 
 
     return NextResponse.json(
       {

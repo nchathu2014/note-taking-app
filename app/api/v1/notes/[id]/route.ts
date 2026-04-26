@@ -2,6 +2,7 @@ import { dbConnect } from "@/lib/back_db";
 import { Note } from "@/models/Note";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { revalidatePath } from "next/cache";
 
 /**
  * Fetch one Note
@@ -106,6 +107,7 @@ export async function DELETE(
     }
     //delete
     await Note.findOneAndDelete({ _id: id });
+    revalidatePath("/")
     return NextResponse.json(
       {
         status: "success",
