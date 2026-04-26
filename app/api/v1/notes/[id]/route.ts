@@ -2,6 +2,7 @@ import { dbConnect } from "@/lib/back_db";
 import { Note } from "@/models/Note";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { revalidatePath } from "next/cache";
 
 /**
  * Fetch one Note
@@ -93,6 +94,7 @@ export async function DELETE(
     }
 
     const note = await Note.findById(id);
+    revalidatePath('/')
     if (!note) {
       return NextResponse.json(
         {

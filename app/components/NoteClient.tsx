@@ -10,7 +10,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoCreateOutline } from "react-icons/io5";
 
 import { confirm } from "./MyDialog";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 
 type NoteClientProps = {
   initialNotes: Note[];
@@ -20,7 +20,8 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
   const [notes, setNotes] = useState<Note[]>(initialNotes);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const router = useRouter()
+  //Todo: will introduce a fix later
+  //const router = useRouter()
 
   const createNote = async () => {
     try {
@@ -183,7 +184,7 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
             {notes?.map((note) => (
               <div
                 key={note?._id}
-                 onClick={()=>router.push(`/notes/${note?._id}`)}
+                 //onClick={()=>router.push(`/notes/${note?._id}`)}
                 className="bg-white p-6 rounded-lg shadow-md hover:bg-gray-100 hover:cursor-pointer"
               >
                 <div className="flex  justify-between items-start mb-2">

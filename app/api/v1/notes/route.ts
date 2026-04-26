@@ -1,5 +1,6 @@
 import { dbConnect } from "@/lib/back_db";
 import { Note } from "@/models/Note";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
     await dbConnect();
     const body = await request.json();
     const note = await Note.create(body);
+    revalidatePath('/')
 
     return NextResponse.json(
       {
@@ -92,6 +94,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     const result = await Note.deleteMany({});
+    revalidatePath('/')
     return NextResponse.json(
       {
         status: "success",
