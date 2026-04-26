@@ -203,10 +203,10 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
                   <p className="text-xs text-gray-500">
                     Created: {new Date(note?.createdAt).toLocaleString("en-US")}
                   </p>
-                  {note?.createdAt !== note?.updateAt && (
+                  {note?.createdAt !== note?.updatedAt && (
                     <p className="text-xs text-gray-500">
                       Updated:{" "}
-                      {new Date(note?.updateAt).toLocaleString("en-US")}
+                      {new Date(note?.updatedAt).toLocaleString("en-US")}
                     </p>
                   )}
                 </div>
