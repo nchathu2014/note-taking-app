@@ -4,16 +4,16 @@ import { BASE_API } from "@/urls/urls";
 import { API_METHODS, Note } from "../app/types/note";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { FaHome } from "react-icons/fa";
 
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { Breadcrumb } from "./Breadcrumb";
+import Link from "next/link";
 
 export function UpdateForm({ note }: { note: Note }) {
   const router = useRouter();
-  const path = usePathname();
-  const params = useParams();
-  console.log(path)
-  console.log(params)
+
+
+
   const [title, setTitle] = useState(note?.title ?? "");
   const [content, setContent] = useState(note?.content ?? "");
 
@@ -71,8 +71,10 @@ export function UpdateForm({ note }: { note: Note }) {
   };
 
   return (
-    <>
-    {/* <Breadcrumb path={path}/> */}
+    <div className="mt-10">
+    <div className="flex justify-center">
+      <Link href={'/'} className="py-2 px-3 bg-gray-300 hover:bg-orange-600 text-whit rounded-lg"><FaHome className="text-2xl inline mr-2"/>Home</Link>
+    </div>
     <form className="bg-white p-6 rounded-lg shadow-md mt-5" action={onUpdate}>
       <div className="flex justify-between mb-4">
         <h2 className="text-2xl font-semibold ">Update Note</h2>
@@ -114,6 +116,6 @@ export function UpdateForm({ note }: { note: Note }) {
         </button>
       </div>
     </form>
-    </>
+    </div>
   );
 }

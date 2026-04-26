@@ -19,7 +19,7 @@ export default async function Home() {
   //const notes = await fetchAllNotes();
   await dbConnect();
   const response = await fetch(BASE_API, {
-    cache: "no-store",
+    cache: "no-cache", //Cache but always validate first
   });
 
   const responseData = await response.json();

@@ -18,7 +18,7 @@ export default async function NoteUpdatePage({
 }) {
   const { id } = await params;
   const response = await fetch(`${BASE_API}/${id}`, {
-    cache: "no-store",
+    cache: "no-cache", //Cache but always validate first
   });
   const responseData = await response.json();
   const note = responseData?.data?.note;
