@@ -19,11 +19,13 @@ type NoteClientProps = {
 export function NoteClient({ initialNotes }: NoteClientProps) {
   const [notes, setNotes] = useState<Note[]>(initialNotes);
   const formRef = useRef<HTMLFormElement>(null);
+  const [loading, setLoading] = useState(false);
 
-const router = useRouter()
+  const router = useRouter();
 
-  const createNote = async () => {
+  const createNote = async (e:React.SubmitEvent<HTMLFormElement>) => {
     try {
+      e.preventDefault();
       const formData = new FormData(formRef.current!);
       const title = formData.get("title");
       const content = formData.get("content");
@@ -32,6 +34,9 @@ const router = useRouter()
         toast("Both fields are mandatory", { type: "error", autoClose: 800 });
         return;
       }
+
+      setLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const response = await fetch(BASE_API, {
         method: API_METHODS.POST,
@@ -47,14 +52,16 @@ const router = useRouter()
       //Reset fields
 
       const { status, data } = await response.json();
-      console.log(data);
+
       if (status === "success") {
         setNotes([data?.note, ...notes]);
       }
 
       formRef?.current?.reset();
       toast(data.message, { type: status, autoClose: 800 });
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       const errorMsg =
         error instanceof Error ? error.message : "Something went wrong";
       toast(errorMsg, { type: "error", autoClose: 800 });
@@ -72,10 +79,6 @@ const router = useRouter()
 
       const filteredNotes = notes?.filter((note) => note?._id !== id);
       setNotes([...filteredNotes]);
-
-      //setNotes([...notes])
-
-      console.log(data);
     } catch (error) {
       const errMsg =
         error instanceof Error ? error?.message : "Something went wrong";
@@ -91,8 +94,8 @@ const router = useRouter()
       });
 
       const { status, data } = await response.json();
-      if(status === 'success'){
-        setNotes([])
+      if (status === "success") {
+        setNotes([]);
       }
       toast(data.message, { type: status, autoClose: 800 });
     } catch (error) {
@@ -118,7 +121,7 @@ const router = useRouter()
       <div className="space-y-6 w-lg">
         <form
           ref={formRef}
-          action={createNote}
+          onSubmit={(e) => createNote(e)}
           className=" mx-auto bg-white p-6 rounded-lg shadow-md mt-5"
         >
           <div className="flex justify-between mb-4">
@@ -131,23 +134,26 @@ const router = useRouter()
               name="title"
               type="text"
               placeholder="Your note title *"
-              className="border border-gray-300 rounded-lg py-3 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-600"
+              disabled={loading}
+              className={`border border-gray-300 rounded-lg py-3 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-600 ${loading ? "disabled:bg-gray-200 disabled:cursor-not-allowed" : ""}`}
             />
             <textarea
               name="content"
               id="content"
               rows={4}
+              disabled={loading}
               placeholder="Your note content *"
-              className="border border-gray-300 rounded-lg py-3 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className={`border border-gray-300 rounded-lg py-3 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-600 ${loading ? "disabled:bg-gray-200 disabled:cursor-not-allowed" : ""}`}
             ></textarea>
           </div>
           <div className="flex justify-between gap-2 mt-6">
             <button
               type="submit"
-              className="py-4 px-6 w-full bg-black text-white rounded-sm hover:cursor-pointer hover:bg-orange-600 hover:text-white hover:border border-orange-900"
+              disabled={loading}
+              className={`py-4 px-6 w-full bg-black text-white rounded-sm hover:cursor-pointer hover:bg-orange-600 hover:text-white hover:border border-orange-900 ${loading ? "disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 disabled:border-none" : ""}`}
             >
               <IoCreateOutline className="inline text-lg mr-2" />
-              Create
+              {loading ? "Creating..." : "Create"}
             </button>
             <button
               type="reset"
@@ -166,13 +172,20 @@ const router = useRouter()
       ) : (
         <div className="space-y-4">
           {notes?.length >= 2 && (
-            <div className="flex justify-center mt-5">
+            <div className="flex justify-center gap-2 mt-5">
               <button
                 className="py-2  px-3 max-w-2xl rounded-md bg-red-600 text-white hover:bg-red-800 hover:cursor-pointer"
                 onClick={handleDelete}
               >
                 Delete All
               </button>
+
+              {/* <button
+                className="py-2  px-3 max-w-2xl rounded-md bg-gray-300 text-black hover:bg-gray-400 hover:cursor-pointer"
+                onClick={() => router.refresh()}
+              >
+                Refresh
+              </button> */}
             </div>
           )}
           <div className="flex flex-col justify-center">
@@ -181,12 +194,19 @@ const router = useRouter()
               )
             </h2>
           </div>
+          {/* <div>
+            <input
+              type="text"
+              placeholder="Search by note title"
+              className="border border-gray-400 rounded py-2 px-3 focus:outline-none"
+            />
+          </div> */}
 
           <div className="flex flex-wrap grow gap-3 m-5 justify-center">
             {notes?.map((note) => (
               <div
                 key={note?._id}
-                className="bg-white p-6 rounded-lg shadow-md hover:bg-gray-100"
+                className={`bg-white p-6 rounded-lg shadow-md hover:bg-gray-100 `}
               >
                 <div className="flex  justify-between items-start mb-2">
                   <h3 className="text-lg font-semibold truncate w-full max-w-xs">
@@ -210,9 +230,10 @@ const router = useRouter()
                 </div>
 
                 <div className="flex justify-end gap-2 mt-5">
-                  <button className="text-blue-500 hover:text-blue-700 hover:cursor-pointer" 
-                  
-                  onClick={()=>router.push(`/notes/${note?._id}`)}>
+                  <button
+                    className="text-blue-500 hover:text-blue-700 hover:cursor-pointer"
+                    onClick={() => router.push(`/notes/${note?._id}`)}
+                  >
                     <FaRegEdit className="text-lg" />
                   </button>
                   <button className="text-red-500 hover:text-red-700 hover:cursor-pointer">

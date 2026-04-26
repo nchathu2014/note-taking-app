@@ -23,7 +23,6 @@ export default async function Home() {
   });
 
   const responseData = await response.json();
-  console.log(JSON.stringify(responseData?.data));
 
   return (
     <div className="bg-gray-200 flex flex-col min-h-screen">
