@@ -92,6 +92,9 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
       });
 
       const { status, data } = await response.json();
+      if(status === 'success'){
+        setNotes([])
+      }
       toast(data.message, { type: status, autoClose: 800 });
     } catch (error) {
       const errMsg =
