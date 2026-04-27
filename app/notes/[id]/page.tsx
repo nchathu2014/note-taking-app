@@ -1,15 +1,6 @@
 import { UpdateForm } from "@/components/UpdateForm";
-import { Note } from "@/models/Note";
 import { BASE_API } from "@/urls/urls";
 import { ToastContainer } from "react-toastify";
-
-// const fetchNoteById = async (id: string) => {
-//   try {
-//     const note = await Note.findById(id).lean();
-//     const noteObj = {...note.toObject()};
-//     return noteObj;
-//   } catch (error) {}
-// };
 
 export default async function NoteUpdatePage({
   params,
