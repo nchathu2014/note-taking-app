@@ -9,8 +9,10 @@ export function Header() {
           <h1 className="text-2xl md:text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
             <Link href={BASE_URL}>Note Taking App</Link>
           </h1>
-          <span className="text-md md:text-lg font-normal">
-            Built with Next.JS, MongoDB, TailwindCSS & More...
+          <span className="text-sm md:text-lg font-normal">
+            Built with: Next.JS{" "}
+            <span className="font-bold">Route handlers</span> &{" "}
+            <span className="font-bold">Extended fetch() </span>functions
           </span>
         </div>
       </div>

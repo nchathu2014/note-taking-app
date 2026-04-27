@@ -4,19 +4,7 @@ import { ToastContainer } from "react-toastify";
 import { Note } from "@/models/Note";
 import { BASE_API } from "@/urls/urls";
 
-//export const dynamic = "force-dynamic";
-
-const fetchAllNotes = async () => {
-  // await dbConnect();
-  // const notes = await Note.find({}).sort({ createdAt: -1 }).lean();
-  // return notes?.map((note) => ({
-  //   ...note, // converts Mongoose object to plain JS object
-  //   _id: note?._id.toString(),
-  // }));
-};
-
 export default async function NotesHome() {
-  //const notes = await fetchAllNotes();
   await dbConnect();
   const response = await fetch(BASE_API, {
     cache: "no-cache", //Cache but always validate first

@@ -3,6 +3,7 @@
 import { API_METHODS, Note, NotesType } from "@/app/types/note";
 import { BASE_API } from "@/urls/urls";
 import { useState, useRef } from "react";
+import Form from "next/form";
 import { toast } from "react-toastify";
 import { FaRegEdit } from "react-icons/fa";
 import { FaNoteSticky } from "react-icons/fa6";
@@ -21,9 +22,11 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
 
+  const [search,setSearch] = useState('')
+
   const router = useRouter();
 
-  const createNote = async (e:React.SubmitEvent<HTMLFormElement>) => {
+  const createNote = async (e: React.SubmitEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
       const formData = new FormData(formRef.current!);
@@ -116,9 +119,15 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
       deleteAllNotes();
     }
   };
+
+ const onSearch = () =>{
+         const filteredNotes = notes?.filter(note=>note?.title.toLowerCase().includes(search.toLowerCase()))
+
+         setNotes(prevNotes => [...prevNotes, ...filteredNotes])
+ }
   return (
     <>
-      <div className="space-y-6 w-lg">
+      <div className="space-y-6 md:w-lg">
         <form
           ref={formRef}
           onSubmit={(e) => createNote(e)}
@@ -140,7 +149,6 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
             <textarea
               name="content"
               id="content"
-              rows={4}
               disabled={loading}
               placeholder="Your note content *"
               className={`border border-gray-300 rounded-lg py-3 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-600 ${loading ? "disabled:bg-gray-200 disabled:cursor-not-allowed" : ""}`}
@@ -188,19 +196,20 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
               </button> */}
             </div>
           )}
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col items-center justify-center">
             <h2 className="flex justify-center text-xl font-semibold mt-3">
-              <FaNoteSticky className="mt-1 mr-2" /> Your Notes ({notes?.length}
-              )
+              <FaNoteSticky className="mt-1 mr-2 mb-4" /> Your Notes (
+              {notes?.length})
             </h2>
+            
+              {/* <input
+                type="text"
+                onChange={(e)=>setSearch(e.target.value)}
+                placeholder="Search by note title"
+                className="border border-gray-400 rounded py-2 px-3 focus:outline-none"
+              /> */}
+          
           </div>
-          {/* <div>
-            <input
-              type="text"
-              placeholder="Search by note title"
-              className="border border-gray-400 rounded py-2 px-3 focus:outline-none"
-            />
-          </div> */}
 
           <div className="flex flex-wrap grow gap-3 m-5 justify-center">
             {notes?.map((note) => (
