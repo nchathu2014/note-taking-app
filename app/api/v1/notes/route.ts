@@ -11,12 +11,28 @@ import { revalidatePath } from "next/cache";
 export async function GET(request: NextRequest) {
   try {
     await dbConnect();
-    const notes = await Note.find();
+    
+    const searchParams = request.nextUrl.searchParams;
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const startIndex = (page - 1) * limit;
+
+    const notes = await Note.find()
+      .sort({ createdAt: -1 })
+      .skip(startIndex)
+      .limit(limit);
+
     return NextResponse.json({
       status: "success",
       data: {
         notes,
-        total: notes?.length,
+        total: notes.length,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(await Note.countDocuments() / limit),
+          hasNextPage: page < Math.ceil(await Note.countDocuments() / limit),
+          hasPrevPage: page > 1,
+        }
       },
     });
   } catch (error) {

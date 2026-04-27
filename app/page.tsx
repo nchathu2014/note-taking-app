@@ -15,7 +15,7 @@ const fetchAllNotes = async () => {
   // }));
 };
 
-export default async function Home() {
+export default async function NotesHome() {
   //const notes = await fetchAllNotes();
   await dbConnect();
   const response = await fetch(BASE_API, {
