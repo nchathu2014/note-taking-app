@@ -12,7 +12,6 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  if (!isValidObjectId(id)) notFound();
 
   await dbConnect();
   const note = await Note.findById(id);
@@ -32,20 +31,16 @@ export default async function NoteUpdatePage({
   let note = null;
   try {
     const { id } = await params;
+    if (!isValidObjectId(id)) notFound();
     const response = await fetch(`${BASE_API}/${id}`, {
       cache: "no-cache", //Cache but always validate first
     });
     const responseData = await response.json();
     note = responseData?.data?.note;
   } catch (error) {
-    return {
-      status: "fail",
-      data: {
-        message: "Not Found",
-      },
-    };
+    notFound();
   }
-
+  if (!note) notFound();
   return (
     <div className="space-y-20  flex justify-center items-center">
       <UpdateForm note={note} />
