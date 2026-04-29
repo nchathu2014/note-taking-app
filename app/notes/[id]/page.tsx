@@ -18,7 +18,7 @@ export async function generateMetadata({
   if (!note) notFound();
 
   return {
-    title: `Note: ${note?.title}`,
+    title: `Note:${note?.title}`,
     description: `Note detail page of ${id}`,
   };
 }
