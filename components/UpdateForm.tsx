@@ -1,7 +1,7 @@
 "use client";
 
 import { BASE_API } from "@/urls/urls";
-import { API_METHODS, Note } from "../app/types/note";
+import { API_METHODS, Note } from "../types/note";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FaHome } from "react-icons/fa";
