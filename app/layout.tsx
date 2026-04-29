@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   description: "Note Taking app, created by Next.JS",
   openGraph: {
     title: ogTitle,
-    description: "This is a Note Taking App",
+    description: "We save your note forever!",
     images: [
       {
         url: ogImageUrl,
