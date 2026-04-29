@@ -26,7 +26,7 @@ export async function generateMetadata({
     title: `Note:${note?.title}`,
     description: `Note detail page of ${id}`,
     openGraph:{
-      title:`Note ${note?.title}`,
+      title:`Note [${note?.title}]`,
       description:'This is a Note Taking App',
       images:[
         {
