@@ -5,7 +5,7 @@ import { BASE_API } from "@/urls/urls";
 import { useState, useRef } from "react";
 import Form from "next/form";
 import { toast } from "react-toastify";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaShare } from "react-icons/fa";
 import { FaNoteSticky } from "react-icons/fa6";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoCreateOutline } from "react-icons/io5";
@@ -22,7 +22,7 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
 
-  const [search,setSearch] = useState('')
+  const [search, setSearch] = useState("");
 
   const router = useRouter();
 
@@ -120,11 +120,18 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
     }
   };
 
- const onSearch = () =>{
-         const filteredNotes = notes?.filter(note=>note?.title.toLowerCase().includes(search.toLowerCase()))
+  const onShareClick =  () => {
+   navigator.clipboard.writeText(window.location.href);
+    toast.success("Link copied to clipboard!");
+  };
 
-         setNotes(prevNotes => [...prevNotes, ...filteredNotes])
- }
+  const onSearch = () => {
+    const filteredNotes = notes?.filter((note) =>
+      note?.title.toLowerCase().includes(search.toLowerCase()),
+    );
+
+    setNotes((prevNotes) => [...prevNotes, ...filteredNotes]);
+  };
   return (
     <>
       <div className="space-y-6 md:w-lg">
@@ -188,12 +195,12 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
                 Delete All
               </button>
 
-              {/* <button
+              <button
                 className="py-2  px-3 max-w-2xl rounded-md bg-gray-300 text-black hover:bg-gray-400 hover:cursor-pointer"
-                onClick={() => router.refresh()}
+                onClick={onShareClick}
               >
-                Refresh
-              </button> */}
+                Share <FaShare className="inline ml-1" />
+              </button>
             </div>
           )}
           <div className="flex flex-col items-center justify-center">
@@ -201,14 +208,13 @@ export function NoteClient({ initialNotes }: NoteClientProps) {
               <FaNoteSticky className="mt-1 mr-2 mb-4" /> Your Notes (
               {notes?.length})
             </h2>
-            
-              {/* <input
+
+            {/* <input
                 type="text"
                 onChange={(e)=>setSearch(e.target.value)}
                 placeholder="Search by note title"
                 className="border border-gray-400 rounded py-2 px-3 focus:outline-none"
               /> */}
-          
           </div>
 
           <div className="flex flex-wrap grow gap-3 m-5 justify-center">

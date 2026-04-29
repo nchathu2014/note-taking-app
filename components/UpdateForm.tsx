@@ -4,7 +4,7 @@ import { BASE_API } from "@/urls/urls";
 import { API_METHODS, Note } from "../types/note";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { FaHome } from "react-icons/fa";
+import { FaHome,FaShare } from "react-icons/fa";
 
 import { useParams, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -74,6 +74,15 @@ export function UpdateForm({ note }: { note: Note }) {
     <div className="mt-10">
     <div className="flex justify-center">
       <Link href={'/'} className="py-2 px-3 bg-gray-300 hover:bg-orange-600 text-whit rounded-lg"><FaHome className="text-2xl inline mr-2"/>Home</Link>
+    <button
+                    className="py-2 ml-2 px-3 max-w-2xl rounded-md bg-gray-100 text-black hover:bg-gray-400 hover:cursor-pointer"
+                    onClick={()=>{
+                      navigator.clipboard.writeText(window.location.href)
+                      toast.success("Link copied to clipboard!")
+                    }}
+                  >
+                    Share <FaShare className="inline ml-1" />
+                  </button>
     </div>
     <form className="bg-white p-6 rounded-lg shadow-md mt-5" action={onUpdate}>
       <div className="flex justify-between mb-4">

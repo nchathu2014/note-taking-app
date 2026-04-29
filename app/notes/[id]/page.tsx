@@ -6,6 +6,8 @@ import { isValidObjectId } from "mongoose";
 import { notFound } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 
+const BASE_URL = process.env.NEXT_BASE_URL;
+
 export async function generateMetadata({
   params,
 }: {
@@ -17,9 +19,30 @@ export async function generateMetadata({
   const note = await Note.findById(id);
   if (!note) notFound();
 
+  //OG Image Url
+  const ogImageUrl = `${BASE_URL}/api/og?title=${encodeURIComponent(`Note ${note?.title}`)}&description=${encodeURIComponent("This is Note Taking App")}`;
+
   return {
     title: `Note:${note?.title}`,
     description: `Note detail page of ${id}`,
+    openGraph:{
+      title:`Note ${note?.title}`,
+      description:'This is a Note Taking App',
+      images:[
+        {
+          url:ogImageUrl,
+          width:800,
+          height:600,
+          alt:"Og Image Alt"
+        },
+        {
+          url:ogImageUrl,
+          width:1800,
+          height:1600,
+          alt:"Og Image Alt"
+        }
+      ]
+    }
   };
 }
 
