@@ -1,6 +1,6 @@
 "use client";
 
-import { API_METHODS, Note, NotesType } from "@/app/types/note";
+import { API_METHODS, Note, NotesType } from "@/types/note";
 import { BASE_API } from "@/urls/urls";
 import { useState, useRef } from "react";
 import Form from "next/form";

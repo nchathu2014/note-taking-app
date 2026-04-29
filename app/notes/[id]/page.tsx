@@ -2,6 +2,18 @@ import { UpdateForm } from "@/components/UpdateForm";
 import { BASE_API } from "@/urls/urls";
 import { ToastContainer } from "react-toastify";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  return {
+    title: `Note: ${id}`,
+    description: `Note detail page of ${id}`,
+  };
+}
+
 export default async function NoteUpdatePage({
   params,
 }: {
@@ -17,7 +29,7 @@ export default async function NoteUpdatePage({
   return (
     <div className="space-y-20  flex justify-center items-center">
       <UpdateForm note={note} />
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }
